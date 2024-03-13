@@ -84,6 +84,8 @@ struct uart_ops {
 	int (*uart_setup)(struct uart *dev, const struct uart_params *params);
 	int (*uart_irq_en)(struct uart *dev, const struct uart_params *params);
 	int (*uart_irq_dis)(struct uart *dev, const struct uart_params *params);
+	int (*uart_get_buff)(struct uart *dev, void *buff, size_t count);
+	int (*uart_put_buff)(struct uart *dev, void *buff, size_t count);	
 };
 
 struct uart {
@@ -183,6 +185,14 @@ static inline int uart_putc(struct uart *uart, int ch) {
 
 static inline int uart_getc(struct uart *uart) {
 	return uart->uart_ops->uart_getc(uart);
+}
+
+static inline int uart_get_buff(struct uart *uart, void *buff, size_t count) {
+	return uart->uart_ops->uart_get_buff(uart, buff, count);
+}
+
+static inline int uart_put_buff(struct uart *uart, void *buff, size_t count) {
+	return uart->uart_ops->uart_put_buff(uart, buff, count);
 }
 
 static inline int uart_hasrx(struct uart *uart) {
